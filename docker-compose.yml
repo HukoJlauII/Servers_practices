@@ -5,16 +5,37 @@ services:
     image: mysql
     container_name: myDB
     volumes:
-      - "./init.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./:/docker-entrypoint-initdb.d/"
     environment:
       MYSQL_ROOT_PASSWORD: password
 
   php-apache:
-    build:
-      "/"
+    build: /
     ports:
       - "80:80"
     volumes:
       - ./:/var/www/html
     depends_on:
       - mysql
+  drawer:
+    container_name: Drawer
+    image: php:7.2-apache
+    ports:
+      - 8000:80
+    volumes:
+      - ./drawer:/var/www/html
+
+  sorter:
+    container_name: Sorter
+    image: php:7.2-apache
+    ports:
+      - 8001:80
+    volumes:
+      - ./sorter:/var/www/html
+  consoler:
+    container_name: Consoler
+    image: php:7.2-apache
+    ports:
+      - 8002:80
+    volumes:
+      - ./consoler:/var/www/html
